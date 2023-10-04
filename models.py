@@ -15,10 +15,10 @@ class Product:
 
     def check_quantity(self, quantity) -> bool:
         """
-        TODO Верните True если количество продукта больше или равно запрашиваемому
+        TODO Верните True если количество продукта больше или равно 0 и запрашиваемому
             и False в обратном случае
         """
-        return self.quantity >= quantity
+        return quantity >= 0 and self.quantity >= quantity
 
     def buy(self, quantity):
         """
@@ -29,7 +29,7 @@ class Product:
         if self.check_quantity(quantity) is True:
             self.quantity -= quantity
         else:
-            raise ValueError
+            raise ValueError('Запрашиваемое количество недоступно')
 
     def __hash__(self):
         return hash(self.name + self.description)
@@ -87,13 +87,7 @@ class Cart:
         Учтите, что товаров может не хватать на складе.
         В этом случае нужно выбросить исключение ValueError
         """
-        if len(self.products) == 0:
-            raise 'Корзина пуста'
 
-        for product in self.products:
-            to_buy = self.products[product]
-            if product.check_quantity(to_buy):
-                continue
-            else:
-                raise ValueError
+        for product, quantity in self.products.items():
+            product.buy(quantity)
         self.clear()

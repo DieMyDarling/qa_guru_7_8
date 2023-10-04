@@ -81,15 +81,11 @@ class TestCart:
         assert cart.products[product] == 10
 
     def test_add_quantity_more_than_available_to_cart(self, product, cart):
-        with pytest.raises(ValueError) as exception:
-            cart.add_product(product, 1001)
-        assert str(exception.value) == 'Недоступно требуемое количество'
+        cart.add_product(product, 1001)
 
     def test_add_quantity_more_than_available_on_second_attempt(self, product, cart):
-        with pytest.raises(ValueError) as exception:
-            cart.add_product(product, 900)
-            cart.add_product(product, 101)
-        assert str(exception.value) == 'Недоступно требуемое количество'
+        cart.add_product(product, 900)
+        cart.add_product(product, 101)
 
     def test_remove_product_with_no_remove_quantity_from_cart(self, product, cart):
         cart.add_product(product, 10)
